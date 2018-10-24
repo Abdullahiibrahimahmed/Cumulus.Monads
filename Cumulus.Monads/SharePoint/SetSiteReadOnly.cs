@@ -59,44 +59,23 @@ namespace Cumulus.Monads.SharePoint
 
                 for (var i = 0; i < visitors.Count; i++)
                 {
-                    try
-                    {
-                        log.Info($"Removing {visitors[i].LoginName} from {associatedVisitorGroup.Title}");
-                        web.RemoveUserFromGroup(associatedVisitorGroup, visitors[i]);
-                    }
-                    catch (ArgumentOutOfRangeException e)
-                    {
-                        log.Info($"Message: {e.Message}, Collection: avisitors,  Count: {visitors.Count}, Index: {i}");
-                    }
+                    log.Info($"Removing {visitors[i].LoginName} from {associatedVisitorGroup.Title}");
+                    web.RemoveUserFromGroup(associatedVisitorGroup, visitors[i]);
                 }
 
                 for (var i = 0; i < members.Count; i++)
                 {
-                    try
-                    {
-                        visitorsPrivate.Add(members[i]);
-                        log.Info($"Removing {members[i].LoginName} from {associatedMemberGroup.Title}");
-                        web.RemoveUserFromGroup(associatedMemberGroup, members[i]);
-                    }
-                    catch (ArgumentOutOfRangeException e)
-                    {
-                        log.Info($"Message: {e.Message}, Collection: members,  Count: {members.Count}, Index: {i}");
-                    }
+                    visitorsPrivate.Add(members[i]);
+                    log.Info($"Removing {members[i].LoginName} from {associatedMemberGroup.Title}");
+                    web.RemoveUserFromGroup(associatedMemberGroup, members[i]);
                 }
 
                 for (var i = 0; i < owners.Count; i++)
                 {
-                    try
-                    {
-                        visitorsPrivate.Add(owners[i]);
-                        log.Info($"Collection: owners,  Count: {owners.Count}, Index: {i}");
-                        log.Info($"Removing {owners[i].LoginName} from {associatedOwnerGroup.Title}");
-                        web.RemoveUserFromGroup(associatedOwnerGroup, owners[i]);
-                    }
-                    catch (ArgumentOutOfRangeException e)
-                    {
-                        log.Info($"Message: {e.Message}, Collection: owners,  Count: {owners.Count}, Index: {i}");
-                    }
+                    visitorsPrivate.Add(owners[i]);
+                    log.Info($"Collection: owners,  Count: {owners.Count}, Index: {i}");
+                    log.Info($"Removing {owners[i].LoginName} from {associatedOwnerGroup.Title}");
+                    web.RemoveUserFromGroup(associatedOwnerGroup, owners[i]);
                 }
 
                 clientContext.ExecuteQueryRetry();
@@ -116,6 +95,7 @@ namespace Cumulus.Monads.SharePoint
                 }
                 else
                 {
+                    log.Info($"The site is standalone or connected to a public group. Adding Everyone but external users to {associatedVisitorGroup.Title}");
                     foreach (User user in siteUsers)
                     {
                         if (user.LoginName.StartsWith(everyoneIdent))
