@@ -74,9 +74,9 @@ namespace Cumulus.Monads.SharePoint
                 {
                     try
                     {
+                        visitorsPrivate.Add(members[i]);
                         log.Info($"Removing {members[i].LoginName} from {associatedMemberGroup.Title}");
                         web.RemoveUserFromGroup(associatedMemberGroup, members[i]);
-                        visitorsPrivate.Add(members[i]);
                     }
                     catch (ArgumentOutOfRangeException e)
                     {
@@ -88,10 +88,10 @@ namespace Cumulus.Monads.SharePoint
                 {
                     try
                     {
+                        visitorsPrivate.Add(owners[i]);
                         log.Info($"Collection: owners,  Count: {owners.Count}, Index: {i}");
                         log.Info($"Removing {owners[i].LoginName} from {associatedOwnerGroup.Title}");
                         web.RemoveUserFromGroup(associatedOwnerGroup, owners[i]);
-                        visitorsPrivate.Add(owners[i]);
                     }
                     catch (ArgumentOutOfRangeException e)
                     {
