@@ -20,7 +20,7 @@ namespace Cumulus.Monads.SharePoint
     {
         [FunctionName("SetSiteReadOnly")]
         [ResponseType(typeof(SetSiteReadOnlyResponse))]
-        [Display(Name = "Set the site to read-only", Description = "")]
+        [Display(Name = "Set the site to read-only", Description = "Removes everyone from members/owner groups, and adds them or everyone to the visitors group (depending on the group being Private or Public)")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post")]SetSiteReadOnlyRequest request, TraceWriter log)
         {
             try
@@ -73,7 +73,6 @@ namespace Cumulus.Monads.SharePoint
                 for (var i = 0; i < owners.Count; i++)
                 {
                     visitorsPrivate.Add(owners[i]);
-                    log.Info($"Collection: owners,  Count: {owners.Count}, Index: {i}");
                     log.Info($"Removing {owners[i].LoginName} from {associatedOwnerGroup.Title}");
                     web.RemoveUserFromGroup(associatedOwnerGroup, owners[i]);
                 }
